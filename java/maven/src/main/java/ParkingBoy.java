@@ -1,47 +1,49 @@
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 /**
  * Created by ydliu on 9/1/14.
  */
-public class ParkingBoy {
+public class ParkingBoy
+{
+    protected Vector<ParkingArea> parkingAreas;
 
-    private Vector<Parkinglot> parkinglots;
-
-    public ParkingBoy() {
-        parkinglots = new Vector<Parkinglot>();
+    public ParkingBoy()
+    {
+        parkingAreas = new Vector<ParkingArea>();
     }
 
-    public void manage(Parkinglot parkinglot) {
-        parkinglots.add(parkinglot);
+    public void manage(ParkingArea parkingArea)
+    {
+        parkingAreas.add(parkingArea);
     }
 
-    public Ticket storeCar(Car car) throws OutOfParkingAreaException {
-
-        for (Parkinglot p : parkinglots) {
-
-            try {
-                Ticket t = p.storeCar(car);
-                return t;
-            } catch (Exception e) {
-
+    public Ticket storeCar(Car car)
+    {
+        for (ParkingArea parkingArea : parkingAreas)
+        {
+            Ticket ticket = parkingArea.store(car);
+            if (ticket != null)
+            {
+                return ticket;
             }
         }
 
-        throw new OutOfParkingAreaException();
+        return null;
     }
 
-    public Car returnCar(Ticket ticket) throws BadTicketException {
-
-        for (Parkinglot p : parkinglots) {
-
-            try {
-                Car car = p.returnCar(ticket);
+    public Car fetchCar(Ticket ticket)
+    {
+        for (ParkingArea parkingArea : parkingAreas)
+        {
+            Car car = parkingArea.fetch(ticket);
+            if (car != null)
+            {
                 return car;
-            } catch (Exception e) {
-
             }
         }
 
-        throw new BadTicketException();
+        return null;
     }
 }

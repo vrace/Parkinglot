@@ -8,72 +8,103 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class ParkingAreaTest {
 
     @Test
-    public void should_not_be_used_at_beginning() {
-
+    public void should_return_same_name() throws Exception
+    {
         // given
-        ParkingArea area = new ParkingArea();
+        String name = "Software Park";
+        ParkingArea area = new ParkingArea(name, 1);
 
         // when
-        Car car = area.getCar();
+        String checkName = area.getName();
 
         // then
-        assertThat(car).isEqualTo(null);
+        assertThat(checkName).isEqualTo(name);
     }
 
     @Test
-    public void should_return_correct_car_when_used() throws Exception {
-
+    public void should_return_same_capacity() throws Exception
+    {
         // given
-        ParkingArea area = new ParkingArea();
-        Car car = new Car("Yang's Car");
-        area.use(car);
+        int capacity = 5;
+        ParkingArea area = new ParkingArea("Software Park", capacity);
 
         // when
-        Car storedCar = area.getCar();
+        int checkCapacity = area.getCapacity();
 
         // then
-        assertThat(storedCar).isEqualTo(car);
-    }
-
-    @Test(expected = ParkingAreaOccupiedException.class)
-    public void should_throw_exception_when_use_again() throws Exception {
-
-        // given
-        ParkingArea area = new ParkingArea();
-
-        // when
-        boolean exceptionCaught = false;
-
-        area.use(new Car("My Car"));
-        area.use(new Car("Bad Guy's Car"));
-
-        // then
-        assertThat(exceptionCaught).isEqualTo(true);
-    }
-
-    @Test(expected = ParkingAreaNotOccupiedException.class)
-    public void should_throw_exception_when_release_and_not_used() throws Exception {
-
-        // given
-        ParkingArea area = new ParkingArea();
-
-        // when
-        area.release();
-
-        // then
+        assertThat(checkCapacity).isEqualTo(capacity);
     }
 
     @Test
-    public void should_not_throw_exception_when_release() throws Exception {
-
+    public void should_return_free_room_equal_to_capacity_at_start() throws Exception
+    {
         // given
-        ParkingArea area = new ParkingArea();
+        int capacity = 10;
+        ParkingArea area = new ParkingArea("Software Park", capacity);
 
         // when
-        area.use(new Car("My Car"));
-        area.release();
+        int freeRoom = area.getFreeRoom();
 
         // then
-        assertThat(area.getCar()).isEqualTo(null);
+        assertThat(freeRoom).isEqualTo(capacity);
+    }
+
+    @Test
+    public void should_return_ticket_when_store_car_with_free_room() throws Exception
+    {
+        // given
+        ParkingArea area = new ParkingArea("Software Park", 3);
+
+        // when
+        Ticket ticket = area.store(new Car("Alto"));
+
+        // then
+        assertThat(ticket).isNotEqualTo(null);
+    }
+
+    @Test
+    public void should_return_null_ticket_when_store_car_without_free_room() throws Exception
+    {
+        // given
+        ParkingArea area = new ParkingArea("Software Park", 2);
+        area.store(new Car("1"));
+        area.store(new Car("2"));
+
+        // when
+        Ticket ticket = area.store(new Car("Giant Truck"));
+
+        // then
+        assertThat(ticket).isEqualTo(null);
+    }
+
+    @Test
+    public void should_return_same_car_when_fetch_with_correct_ticket() throws Exception
+    {
+        // given
+        ParkingArea area = new ParkingArea("Software Park", 2);
+        Car car = new Car("1");
+        Ticket ticket = area.store(car);
+
+        // when
+        Car fetchedCar = area.fetch(ticket);
+
+        // then
+        assertThat(fetchedCar).isEqualTo(car);
+    }
+
+    @Test
+    public void should_return_null_car_when_fetch_with_fraud_ticket() throws Exception
+    {
+        // given
+        ParkingArea area = new ParkingArea("Software Park", 2);
+        Car malibu = new Car("Malibu");
+        area.store(malibu);
+
+        // when
+        Car whateverCar = area.fetch(new Ticket());
+
+        // then
+        assertThat(whateverCar).isNotEqualTo(malibu);
+        assertThat(whateverCar).isEqualTo(null);
     }
 }

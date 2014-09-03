@@ -1,30 +1,58 @@
+import java.util.HashMap;
+
 /**
  * Created by ydliu on 9/1/14.
  */
-public class ParkingArea {
 
-    private Car car;
+public class ParkingArea
+{
+    private String name;
+    private int capacity;
+    private HashMap<Ticket, Car> occupied;
 
-    public ParkingArea() {
-        car = null;
+    public ParkingArea(String name, int capacity)
+    {
+        this.name = name;
+        this.capacity = capacity;
+        occupied = new HashMap<Ticket, Car>();
     }
 
-    public Car getCar() {
-        return car;
-    }
-
-    public Ticket use(Car car) throws ParkingAreaOccupiedException {
-        if (this.car != null) {
-            throw new ParkingAreaOccupiedException();
+    public Ticket store(Car car)
+    {
+        if (occupied.size() < capacity)
+        {
+            Ticket ticket = new Ticket();
+            occupied.put(ticket, car);
+            return ticket;
         }
-        this.car = car;
-        return new Ticket();
+
+        return null;
     }
 
-    public void release() throws ParkingAreaNotOccupiedException {
-        if (this.car == null) {
-            throw new ParkingAreaNotOccupiedException();
+    public Car fetch(Ticket ticket)
+    {
+        if (occupied.containsKey(ticket))
+        {
+            Car car = occupied.get(ticket);
+            occupied.remove(ticket);
+            return car;
         }
-        this.car = null;
+
+        return null;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public int getCapacity()
+    {
+        return capacity;
+    }
+
+    public int getFreeRoom()
+    {
+        return capacity - occupied.size();
     }
 }

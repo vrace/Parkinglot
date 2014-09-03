@@ -8,15 +8,15 @@ import static org.fest.assertions.api.Assertions.assertThat;
  */
 public class ParkingBoyTest {
 
-    private ParkingBoy parkingBoy;
+    protected ParkingBoy parkingBoy;
 
     @Before
     public void setup() {
 
         parkingBoy = new ParkingBoy();
 
-        parkingBoy.manage(new Parkinglot(1));
-        parkingBoy.manage(new Parkinglot(2));
+        parkingBoy.manage(new ParkingArea("SP_A", 1));
+        parkingBoy.manage(new ParkingArea("SP_B", 2));
 
     }
 
@@ -47,18 +47,19 @@ public class ParkingBoyTest {
         assertThat(ticket).isNotEqualTo(null);
     }
 
-    @Test(expected = OutOfParkingAreaException.class)
-    public void should_throw_exception_when_failed_to_park() throws Exception {
+    @Test
+    public void should_return_null_ticket_when_failed_to_park() throws Exception {
 
         // given
-
-        // when
         parkingBoy.storeCar(new Car("A"));
         parkingBoy.storeCar(new Car("B"));
         parkingBoy.storeCar(new Car("C"));
-        parkingBoy.storeCar(new Car("D"));
+
+        // when
+        Ticket ticket = parkingBoy.storeCar(new Car("D"));
 
         // then
+        assertThat(ticket).isEqualTo(null);
     }
 
     @Test
@@ -69,22 +70,23 @@ public class ParkingBoyTest {
         Ticket ticket = parkingBoy.storeCar(car);
 
         // when
-        Car returnedCar = parkingBoy.returnCar(ticket);
+        Car fetchedCar = parkingBoy.fetchCar(ticket);
 
         // then
-        assertThat(returnedCar).isEqualTo(car);
+        assertThat(fetchedCar).isEqualTo(car);
     }
 
-    @Test(expected = BadTicketException.class)
-    public void should_throw_exception_when_ticket_is_bad() throws Exception {
+    @Test
+    public void should_return_null_car_when_ticket_is_bad() throws Exception {
 
         // given
         parkingBoy.storeCar(new Car("Wasted Car"));
         Ticket fraudTicket = new Ticket();
 
         // when
-        parkingBoy.returnCar(fraudTicket);
+        Car car = parkingBoy.fetchCar(fraudTicket);
 
         // then
+        assertThat(car).isEqualTo(null);
     }
 }

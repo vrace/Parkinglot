@@ -6,13 +6,13 @@ import static org.fest.assertions.api.Assertions.assertThat;
 /**
  * Created by ydliu on 9/1/14.
  */
-public class ParkingBoyTest {
-
+public class ParkingBoyTest
+{
     protected ParkingBoy parkingBoy;
 
     @Before
-    public void setup() {
-
+    public void setup()
+    {
         parkingBoy = new ParkingBoy();
 
         parkingBoy.manage(new ParkingArea("SP_A", 1));
@@ -21,8 +21,8 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_return_ticket_when_park_success() throws Exception {
-
+    public void should_return_ticket_when_park_success() throws Exception
+    {
         // given
         Car car = new Car("Yang's Car");
 
@@ -34,8 +34,8 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_return_ticket_when_park_last_one() throws Exception {
-
+    public void should_return_ticket_when_park_last_one() throws Exception
+    {
         // given
         parkingBoy.storeCar(new Car("A"));
         parkingBoy.storeCar(new Car("B"));
@@ -48,8 +48,8 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_return_null_ticket_when_failed_to_park() throws Exception {
-
+    public void should_return_null_ticket_when_failed_to_park() throws Exception
+    {
         // given
         parkingBoy.storeCar(new Car("A"));
         parkingBoy.storeCar(new Car("B"));
@@ -63,8 +63,8 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_return_correct_car_when_ticket_is_correct() throws Exception {
-
+    public void should_return_correct_car_when_ticket_is_correct() throws Exception
+    {
         // given
         Car car = new Car("Yang's Car");
         Ticket ticket = parkingBoy.storeCar(car);
@@ -77,8 +77,8 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_return_null_car_when_ticket_is_bad() throws Exception {
-
+    public void should_return_null_car_when_ticket_is_bad() throws Exception
+    {
         // given
         parkingBoy.storeCar(new Car("Wasted Car"));
         Ticket fraudTicket = new Ticket();
@@ -88,5 +88,21 @@ public class ParkingBoyTest {
 
         // then
         assertThat(car).isEqualTo(null);
+    }
+
+    @Test
+    public void should_return_report_with_correct_indent_and_with_sub_report() throws Exception
+    {
+        // given
+        String expected =
+                "  Parking Boy - 2 Parking Areas\n" +
+                "    Parking Area 'SP_A' - 0/1 Occupied\n" +
+                "    Parking Area 'SP_B' - 0/2 Occupied\n";
+
+        // when
+        String report = parkingBoy.report("  ");
+
+        // then
+        assertThat(report).isEqualTo(expected);
     }
 }

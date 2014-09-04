@@ -5,7 +5,7 @@ import java.util.Vector;
 /**
  * Created by ydliu on 9/1/14.
  */
-public class ParkingBoy
+public class ParkingBoy implements Reportable
 {
     protected Vector<ParkingArea> parkingAreas;
 
@@ -45,5 +45,26 @@ public class ParkingBoy
         }
 
         return null;
+    }
+
+    protected String reportParkingAreas(String indentSpace)
+    {
+        String parkingAreaReports = "";
+
+        for (ParkingArea parkingArea : parkingAreas)
+        {
+            parkingAreaReports += parkingArea.report(indentSpace);
+        }
+
+        return parkingAreaReports;
+    }
+
+    @Override
+    public String report(String indentSpace)
+    {
+        String self = String.format("%sParking Boy - %d Parking Areas\n",
+                indentSpace, parkingAreas.size());
+
+        return self + reportParkingAreas(indentSpace + "  ");
     }
 }

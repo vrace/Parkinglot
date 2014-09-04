@@ -4,7 +4,7 @@ import java.util.HashMap;
  * Created by ydliu on 9/1/14.
  */
 
-public class ParkingArea
+public class ParkingArea implements Reportable
 {
     private String name;
     private int capacity;
@@ -54,5 +54,12 @@ public class ParkingArea
     public int getFreeRoom()
     {
         return capacity - occupied.size();
+    }
+
+    @Override
+    public String report(String indentSpace)
+    {
+        return String.format("%sParking Area '%s' - %d/%d Occupied\n",
+                indentSpace, name, occupied.size(), capacity);
     }
 }

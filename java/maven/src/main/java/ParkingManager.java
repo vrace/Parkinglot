@@ -62,4 +62,17 @@ public class ParkingManager extends SmartParkingBoy
 
         return super.fetchCar(ticket);
     }
+
+    @Override
+    public String report(String indentSpace)
+    {
+        String self = String.format("%sParking Manager - %d Parking Boys\n", indentSpace, parkingBoys.size());
+        String boyReports = "";
+        String nextIndent = indentSpace + "  ";
+        for (ParkingBoy boy : parkingBoys)
+        {
+            boyReports += boy.report(nextIndent);
+        }
+        return self + boyReports + reportParkingAreas(nextIndent);
+    }
 }

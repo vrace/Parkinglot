@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
@@ -47,24 +48,20 @@ public class ParkingBoy implements Reportable
         return null;
     }
 
-    protected String reportParkingAreas(String indentSpace)
+    @Override
+    public String report()
     {
-        String parkingAreaReports = "";
-
-        for (ParkingArea parkingArea : parkingAreas)
-        {
-            parkingAreaReports += parkingArea.report(indentSpace);
-        }
-
-        return parkingAreaReports;
+        return String.format("Parking Boy - %d Parking Areas", parkingAreas.size());
     }
 
     @Override
-    public String report(String indentSpace)
+    public ArrayList<Reportable> getSubNodes()
     {
-        String self = String.format("%sParking Boy - %d Parking Areas\n",
-                indentSpace, parkingAreas.size());
-
-        return self + reportParkingAreas(indentSpace + "  ");
+        ArrayList<Reportable> arr = new ArrayList<Reportable>();
+        for (ParkingArea parkingArea : parkingAreas)
+        {
+            arr.add(parkingArea);
+        }
+        return arr;
     }
 }

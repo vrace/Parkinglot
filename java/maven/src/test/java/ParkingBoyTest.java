@@ -89,20 +89,4 @@ public class ParkingBoyTest
         // then
         assertThat(car).isEqualTo(null);
     }
-
-    @Test
-    public void should_return_report_with_correct_indent_and_with_sub_report() throws Exception
-    {
-        // given
-        String expected =
-                "  Parking Boy - 2 Parking Areas\n" +
-                "    Parking Area 'SP_A' - 0/1 Occupied\n" +
-                "    Parking Area 'SP_B' - 0/2 Occupied\n";
-
-        // when
-        String report = parkingBoy.report("  ");
-
-        // then
-        assertThat(report).isEqualTo(expected);
-    }
 }

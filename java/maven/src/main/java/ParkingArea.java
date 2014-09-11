@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -57,9 +58,15 @@ public class ParkingArea implements Reportable
     }
 
     @Override
-    public String report(String indentSpace)
+    public String report()
     {
-        return String.format("%sParking Area '%s' - %d/%d Occupied\n",
-                indentSpace, name, occupied.size(), capacity);
+        return String.format("Parking Area '%s' - %d/%d Occupied",
+                name, occupied.size(), capacity);
+    }
+
+    @Override
+    public ArrayList<Reportable> getSubNodes()
+    {
+        return new ArrayList<Reportable>();
     }
 }

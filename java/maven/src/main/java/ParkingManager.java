@@ -1,7 +1,4 @@
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Created by ydliu on 9/3/14.
@@ -64,15 +61,23 @@ public class ParkingManager extends SmartParkingBoy
     }
 
     @Override
-    public String report(String indentSpace)
+    public String report()
     {
-        String self = String.format("%sParking Manager - %d Parking Boys\n", indentSpace, parkingBoys.size());
-        String boyReports = "";
-        String nextIndent = indentSpace + "  ";
+        return String.format("Parking Manager - %d Parking Boys\n", parkingBoys.size());
+    }
+
+    @Override
+    public ArrayList<Reportable> getSubNodes()
+    {
+        ArrayList<Reportable> arr = new ArrayList<Reportable>();
+
         for (ParkingBoy boy : parkingBoys)
         {
-            boyReports += boy.report(nextIndent);
+            arr.add(boy);
         }
-        return self + boyReports + reportParkingAreas(nextIndent);
+
+        arr.addAll(super.getSubNodes());
+
+        return arr;
     }
 }

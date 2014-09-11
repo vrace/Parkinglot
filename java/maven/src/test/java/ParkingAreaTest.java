@@ -107,18 +107,4 @@ public class ParkingAreaTest
         assertThat(whateverCar).isNotEqualTo(malibu);
         assertThat(whateverCar).isEqualTo(null);
     }
-
-    @Test
-    public void should_return_report_with_specified_indent() throws Exception
-    {
-        // given
-        ParkingArea area = new ParkingArea("Software Park", 3);
-        area.store(new Car(""));
-
-        // when
-        String report = area.report("    ");
-
-        // then
-        assertThat(report).isEqualTo("    Parking Area 'Software Park' - 1/3 Occupied\n");
-    }
 }
